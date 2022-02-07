@@ -1,0 +1,105 @@
+set(CPACK_PACKAGE_NAME "Neovim")
+set(CPACK_PACKAGE_VENDOR "neovim.io")
+set(CPACK_PACKAGE_FILE_NAME "nvim")
+
+# Rephrased the README.md's short introductory description.
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Neovim is a modern vim fork aimed to
+provide better maintainability, extensibility and more.")
+
+set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PACKAGE_NAME})
+
+# Pull the versions defined with the top level CMakeLists.txt
+set(CPACK_PACKAGE_VERSION_MAJOR ${NVIM_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${NVIM_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${NVIM_VERSION_PATCH})
+
+# CPACK_VERBATIM_VARIABLES ensures that the variables prefixed with *CPACK_*
+# are correctly passed to the cpack program.
+set(CPACK_VERBATIM_VARIABLES TRUE)
+
+# Use the default CPack-generated generic description and welcome files
+# until appropriate texts are added. If these files are created, they should
+# be placed in the same packaging dir here and set using:
+#
+#set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_CURRENT_LIST_DIR}/Description.txt)
+#set(CPACK_RESOURCE_FILE_WELCOME ${CMAKE_CURRENT_LIST_DIR}/Welcome.txt)
+
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE.txt")
+set(CPACK_RESOURCE_FILE_README ${PROJECT_SOURCE_DIR}/README.md)
+
+
+if(WIN32)
+  set(CPACK_PACKAGE_FILE_NAME "nvim-win64")
+  set(CPACK_GENERATOR ZIP WIX NSIS)
+
+  # WIX
+  # CPACK_WIX_UPGRADE_GUID should be set, but should never change.
+  # CPACK_WIX_PRODUCT_GUID should not be set (leave as default to auto-generate).
+
+  # The following guid is just a randomly generated guid that's been pasted here.
+  # The GUID itself has no special meaning.
+  set(CPACK_WIX_UPGRADE_GUID "207A1A70-7B0C-418A-A153-CA6883E38F4D")
+  set(CPACK_WIX_PRODUCT_ICON ${CMAKE_CURRENT_LIST_DIR}/logo.ico)
+
+  # NSIS
+  # Force the installer to check the registry for an existing installation be
+  # upgraded before installing a new version.
+  set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL TRUE)
+
+  # install icon
+  set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_LIST_DIR}/logo.ico)
+
+  # uninstall icon
+  set(CPACK_NSIS_MUI_UNIICON ${CMAKE_CURRENT_LIST_DIR}/logo.ico)
+
+  # icon that appears when you search in Add/Remove programs
+  set(CPACK_NSIS_INSTALLED_ICON_NAME bin/logo.ico)
+
+  # name that appears in the list in Add/Remove programs
+  set(CPACK_NSIS_DISPLAY_NAME "Neovim")
+
+  # name used in various installer UI locations, such as the title
+  set(CPACK_NSIS_PACKAGE_NAME "Neovim")
+
+  # Allow the user to modify their path to include neovim during
+  # the installation process.
+  set(CPACK_NSIS_MODIFY_PATH TRUE)
+elseif(APPLE)
+  set(CPACK_PACKAGE_FILE_NAME "nvim-macos")
+#  TODO: Generate a dmg using DragNDrop and replace release CI packager
+#
+#  You'll need to add MACOSX_BUNDLE to the nvim
+#  add_executable() command and additionally
+#  set the BUNDLE DESTINATION of the install target.
+#
+#  The following commented out code is some
+#  progress towards building it.
+#
+#  set(APP ${CMAKE_BINARY_DIR}/bin/nvim.app)
+#  set(DIR ${CMAKE_BINARY_DIR}/bin)
+#
+#  install(CODE "include(BundleUtilities)
+#    fixup_bundle(${APP} \"\" ${DIR})")
+
+  set(CPACK_GENERATOR TGZ)
+  set(CPACK_PACKAGE_ICON ${CMAKE_CURRENT_LIST_DIR}/logo.icns)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  set(CPACK_PACKAGE_FILE_NAME "nvim-linux64")
+  set(CPACK_GENERATOR TGZ DEB)
+  set(CPACK_DEBIAN_PACKAGE_NAME "Neovim") # required
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Neovim.io") # required
+
+  # Automatically compute required shared lib dependencies.
+  # Unfortunately, you "just need to know" that this has a hidden
+  # dependency on dpkg-shlibdeps whilst using a debian based host.
+  set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS TRUE)
+
+else()
+  set(CPACK_GENERATOR TGZ)
+endif()
+
+# CPack variables are loaded in on the call to include(CPack). If you set
+# variables *after* the inclusion, they don't get updated within the CPack
+# config. Note that some CPack commands should still be run after it, such
+# as cpack_add_component().
+include(CPack)

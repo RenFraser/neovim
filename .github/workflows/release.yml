@@ -40,11 +40,16 @@ jobs:
           printf '::set-output name=release::%s\n' "$(./build/bin/nvim --version | head -n 1)"
           make DESTDIR="$GITHUB_WORKSPACE/build/release/nvim-linux64" install
           cd "$GITHUB_WORKSPACE/build/release"
-          tar cfz nvim-linux64.tar.gz nvim-linux64
+          cpack -C Release
       - uses: actions/upload-artifact@v2
         with:
-          name: nvim-linux64
+          name: nvim-linux64-tar
           path: build/release/nvim-linux64.tar.gz
+          retention-days: 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: nvim-linux64-deb
+          path: build/release/nvim-linux64.deb
           retention-days: 1
 
   appimage:
@@ -131,11 +136,23 @@ jobs:
       - run: powershell ci\build.ps1 -NoTests
         env:
           CONFIGURATION: ${{ matrix.config }}
-      - run: move build\Neovim.zip build\${{ matrix.archive }}.zip
+      - run: |
+          cd build/ 
+          cpack -C RelWithDebInfo
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.archive }}
           path: build/${{ matrix.archive }}.zip
+          retention-days: 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.archive }}
+          path: build/${{ matrix.archive }}.msi
+          retention-days: 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.archive }}
+          path: build/${{ matrix.archive }}.exe
           retention-days: 1
 
   publish:
