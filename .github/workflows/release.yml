@@ -37,12 +37,12 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: nvim-linux64-tar
-          path: $GITHUB_WORKSPACE/build/nvim-linux64.tar.gz
+          path: build/nvim-linux64.tar.gz
           retention-days: 1
       - uses: actions/upload-artifact@v2
         with:
           name: nvim-linux64-deb
-          path: $GITHUB_WORKSPACE/build/nvim-linux64.deb
+          path: build/nvim-linux64.deb
           retention-days: 1
 
   appimage:
@@ -131,7 +131,7 @@ jobs:
           CONFIGURATION: ${{ matrix.config }}
       - run: |
           cd build/ 
-          cpack -C RelWithDebInfo
+          cpack -C $NVIM_BUILD_TYPE
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.archive }}
