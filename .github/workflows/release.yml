@@ -33,6 +33,9 @@ jobs:
           printf '::set-output name=release::%s\n' "$(./build/bin/nvim --version | head -n 1)"
           make DESTDIR="$GITHUB_WORKSPACE/build/release/nvim-linux64" install
           cd "$GITHUB_WORKSPACE/build/release"
+          echo "about to cpack on linux"
+          pwd
+          echo "$GITHUB_WORKSPACE/build/release"
           cpack -C Release
       - uses: actions/upload-artifact@v2
         with:
