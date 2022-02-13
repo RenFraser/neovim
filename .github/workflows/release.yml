@@ -33,18 +33,16 @@ jobs:
           printf '::set-output name=release::%s\n' "$(./build/bin/nvim --version | head -n 1)"
           make DESTDIR="$GITHUB_WORKSPACE/build/release/nvim-linux64" install
           cd "$GITHUB_WORKSPACE/build/"
-          echo "about to cpack on linux"
-          pwd
           cpack -C $NVIM_BUILD_TYPE
       - uses: actions/upload-artifact@v2
         with:
           name: nvim-linux64-tar
-          path: build/release/nvim-linux64.tar.gz
+          path: $GITHUB_WORKSPACE/build/nvim-linux64.tar.gz
           retention-days: 1
       - uses: actions/upload-artifact@v2
         with:
           name: nvim-linux64-deb
-          path: build/release/nvim-linux64.deb
+          path: $GITHUB_WORKSPACE/build/nvim-linux64.deb
           retention-days: 1
 
   appimage:
