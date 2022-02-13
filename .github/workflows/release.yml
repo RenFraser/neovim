@@ -32,7 +32,7 @@ jobs:
           printf '::set-output name=version::%s\n' "$(./build/bin/nvim --version | head -n 3 | sed -z 's/\n/%0A/g')"
           printf '::set-output name=release::%s\n' "$(./build/bin/nvim --version | head -n 1)"
           make DESTDIR="$GITHUB_WORKSPACE/build/release/nvim-linux64" install
-          cd "$GITHUB_WORKSPACE/build/release/nvim-linux64"
+          cd "$GITHUB_WORKSPACE/build/"
           echo "about to cpack on linux"
           pwd
           cpack -C $NVIM_BUILD_TYPE
