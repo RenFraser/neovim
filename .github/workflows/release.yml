@@ -36,12 +36,12 @@ jobs:
           cpack -C $NVIM_BUILD_TYPE
       - uses: actions/upload-artifact@v2
         with:
-          name: nvim-linux64-tar
+          name: nvim-linux64
           path: build/nvim-linux64.tar.gz
           retention-days: 1
       - uses: actions/upload-artifact@v2
         with:
-          name: nvim-linux64-deb
+          name: nvim-linux64
           path: build/nvim-linux64.deb
           retention-days: 1
 
@@ -192,10 +192,9 @@ jobs:
       # containing folder from the output.
       - name: Generate Linux64 SHA256 checksums
         run: |
-          cd "nvim-linux64-tar"
+          cd "nvim-linux64"
           sha256sum nvim-linux64.tar.gz > nvim-linux64.tar.gz.sha256sum
           echo "SHA_LINUX_64=$(cat nvim-linux64.tar.gz.sha256sum)" >> $GITHUB_ENV
-          cd "../nvim-linux64-deb"
           sha256sum nvim-linux64.deb > nvim-linux64.deb.sha256sum
           echo "SHA_LINUX_64_DEB=$(cat nvim-linux64.deb.sha256sum)" >> $GITHUB_ENV
       - name: Generate App Image SHA256 checksums
