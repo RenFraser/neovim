@@ -34,6 +34,7 @@ jobs:
           make DESTDIR="$GITHUB_WORKSPACE/build/release/nvim-linux64" install
           cd "$GITHUB_WORKSPACE/build/"
           cpack -C $NVIM_BUILD_TYPE
+          cd "release"
       - uses: actions/upload-artifact@v2
         with:
           name: nvim-linux64-tar
