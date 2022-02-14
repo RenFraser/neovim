@@ -192,13 +192,12 @@ jobs:
       # containing folder from the output.
       - name: Generate Linux64 SHA256 checksums
         run: |
-          pwd
-          ls "$GITHUB_WORKSPACE"
-          ls "$GITHUB_WORKSPACE/build/"
-          ls "$GITHUB_WORKSPACE/build/release/"
-          cd "$GITHUB_WORKSPACE/build/release/nvim-linux64"
+          cd "nvim-linux64-tar"
           sha256sum nvim-linux64.tar.gz > nvim-linux64.tar.gz.sha256sum
           echo "SHA_LINUX_64=$(cat nvim-linux64.tar.gz.sha256sum)" >> $GITHUB_ENV
+          cd "../nvim-linux64-deb"
+          sha256sum nvim-linux64.deb > nvim-linux64.deb.sha256sum
+          echo "SHA_LINUX_64_DEB=$(cat nvim-linux64.deb.sha256sum)" >> $GITHUB_ENV
       - name: Generate App Image SHA256 checksums
         run: |
           cd ./appimage
@@ -219,6 +218,10 @@ jobs:
           cd ./nvim-win64
           sha256sum nvim-win64.zip > nvim-win64.zip.sha256sum
           echo "SHA_WIN_64=$(cat nvim-win64.zip.sha256sum)" >> $GITHUB_ENV
+          sha256sum nvim-win64.msi > nvim-win64.msi.sha256sum
+          echo "SHA_WIN_64_MSI=$(cat nvim-win64.msi.sha256sum)" >> $GITHUB_ENV
+          sha256sum nvim-win64.exe > nvim-win64.exe.sha256sum
+          echo "SHA_WIN_64_EXE=$(cat nvim-win64.exe.sha256sum)" >> $GITHUB_ENV
       - name: Publish release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
