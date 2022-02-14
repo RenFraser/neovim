@@ -129,9 +129,6 @@ jobs:
       - run: powershell ci\build.ps1 -NoTests
         env:
           CONFIGURATION: ${{ matrix.config }}
-      - run: |
-          cd build/ 
-          cpack -C $NVIM_BUILD_TYPE
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.archive }}
