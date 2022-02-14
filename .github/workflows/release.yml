@@ -34,7 +34,6 @@ jobs:
           make DESTDIR="$GITHUB_WORKSPACE/build/release/nvim-linux64" install
           cd "$GITHUB_WORKSPACE/build/"
           cpack -C $NVIM_BUILD_TYPE
-          cd "release"
       - uses: actions/upload-artifact@v2
         with:
           name: nvim-linux64-tar
@@ -193,7 +192,7 @@ jobs:
       # containing folder from the output.
       - name: Generate Linux64 SHA256 checksums
         run: |
-          cd ./nvim-linux64
+          cd "$GITHUB_WORKSPACE/build/release/nvim-linux64"
           sha256sum nvim-linux64.tar.gz > nvim-linux64.tar.gz.sha256sum
           echo "SHA_LINUX_64=$(cat nvim-linux64.tar.gz.sha256sum)" >> $GITHUB_ENV
       - name: Generate App Image SHA256 checksums
