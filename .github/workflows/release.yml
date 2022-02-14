@@ -192,6 +192,10 @@ jobs:
       # containing folder from the output.
       - name: Generate Linux64 SHA256 checksums
         run: |
+          pwd
+          ls "$GITHUB_WORKSPACE"
+          ls "$GITHUB_WORKSPACE/build/"
+          ls "$GITHUB_WORKSPACE/build/release/"
           cd "$GITHUB_WORKSPACE/build/release/nvim-linux64"
           sha256sum nvim-linux64.tar.gz > nvim-linux64.tar.gz.sha256sum
           echo "SHA_LINUX_64=$(cat nvim-linux64.tar.gz.sha256sum)" >> $GITHUB_ENV
