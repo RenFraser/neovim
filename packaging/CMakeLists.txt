@@ -15,14 +15,8 @@ set(CPACK_PACKAGE_VERSION_PATCH ${NVIM_VERSION_PATCH})
 
 # CPACK_VERBATIM_VARIABLES ensures that the variables prefixed with *CPACK_*
 # are correctly passed to the cpack program.
+# This should always be set to true.
 set(CPACK_VERBATIM_VARIABLES TRUE)
-
-# Use the default CPack-generated generic description and welcome files
-# until appropriate texts are added. If these files are created, they should
-# be placed in the same packaging dir here and set using:
-#
-#set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_CURRENT_LIST_DIR}/Description.txt)
-#set(CPACK_RESOURCE_FILE_WELCOME ${CMAKE_CURRENT_LIST_DIR}/Welcome.txt)
 
 set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE.txt")
 set(CPACK_RESOURCE_FILE_README ${PROJECT_SOURCE_DIR}/README.md)
@@ -37,15 +31,11 @@ if(WIN32)
   # CPACK_WIX_PRODUCT_GUID should not be set (leave as default to auto-generate).
 
   # The following guid is just a randomly generated guid that's been pasted here.
-  # The GUID itself has no special meaning.
+  # It has no special meaning other than to supply it to WIX.
   set(CPACK_WIX_UPGRADE_GUID "207A1A70-7B0C-418A-A153-CA6883E38F4D")
   set(CPACK_WIX_PRODUCT_ICON ${CMAKE_CURRENT_LIST_DIR}/logo.ico)
 
   # NSIS
-  # Force the installer to check the registry for an existing installation be
-  # upgraded before installing a new version.
-  set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL TRUE)
-
   # install icon
   set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_LIST_DIR}/logo.ico)
 
@@ -53,7 +43,7 @@ if(WIN32)
   set(CPACK_NSIS_MUI_UNIICON ${CMAKE_CURRENT_LIST_DIR}/logo.ico)
 
   # icon that appears when you search in Add/Remove programs
-  set(CPACK_NSIS_INSTALLED_ICON_NAME bin/logo.ico)
+  set(CPACK_NSIS_INSTALLED_ICON_NAME ${CMAKE_CURRENT_LIST_DIR}/logo.ico)
 
   # name that appears in the list in Add/Remove programs
   set(CPACK_NSIS_DISPLAY_NAME "Neovim")
@@ -66,21 +56,6 @@ if(WIN32)
   set(CPACK_NSIS_MODIFY_PATH TRUE)
 elseif(APPLE)
   set(CPACK_PACKAGE_FILE_NAME "nvim-macos")
-#  TODO: Generate a dmg using DragNDrop and replace release CI packager
-#
-#  You'll need to add MACOSX_BUNDLE to the nvim
-#  add_executable() command and additionally
-#  set the BUNDLE DESTINATION of the install target.
-#
-#  The following commented out code is some
-#  progress towards building it.
-#
-#  set(APP ${CMAKE_BINARY_DIR}/bin/nvim.app)
-#  set(DIR ${CMAKE_BINARY_DIR}/bin)
-#
-#  install(CODE "include(BundleUtilities)
-#    fixup_bundle(${APP} \"\" ${DIR})")
-
   set(CPACK_GENERATOR TGZ)
   set(CPACK_PACKAGE_ICON ${CMAKE_CURRENT_LIST_DIR}/logo.icns)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -93,7 +68,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   # Unfortunately, you "just need to know" that this has a hidden
   # dependency on dpkg-shlibdeps whilst using a debian based host.
   set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS TRUE)
-
 else()
   set(CPACK_GENERATOR TGZ)
 endif()
