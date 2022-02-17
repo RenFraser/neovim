@@ -11,6 +11,7 @@ on:
       - 'release-[0-9]+.[0-9]+'
       - feature/*
 
+
 # Cancel any in-progress CI runs for a PR if it is updated
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
