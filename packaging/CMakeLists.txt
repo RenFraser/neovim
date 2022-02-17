@@ -2,9 +2,8 @@ set(CPACK_PACKAGE_NAME "Neovim")
 set(CPACK_PACKAGE_VENDOR "neovim.io")
 set(CPACK_PACKAGE_FILE_NAME "nvim")
 
-# Rephrased the README.md's short introductory description.
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Neovim is a modern vim fork aimed to
-provide better maintainability, extensibility and more.")
+# From the GitHub About section
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Vim-fork focused on extensibility and usability.")
 
 set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PACKAGE_NAME})
 
