@@ -4,12 +4,13 @@ on:
     branches:
       - 'master'
       - 'release-[0-9]+.[0-9]+'
+      - feature/*
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - 'master'
       - 'release-[0-9]+.[0-9]+'
-      - feature/*
+
 
 
 # Cancel any in-progress CI runs for a PR if it is updated
